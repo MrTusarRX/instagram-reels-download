@@ -1,7 +1,6 @@
   const input = document.getElementById('instagramReelUrl');
   const pasteBtn = document.getElementById('pasteButton');
   const clearBtn = document.getElementById('clearButton');
-
   input.addEventListener('input', () => {
     clearBtn.classList.toggle('hidden', input.value.trim() === '');
   });
@@ -41,4 +40,4 @@ const footerDate = document.getElementById('footerDate');
   }
 
   updateFooterDate();  
-  setInterval(updateFooterDate, 1000); 
+  setInterval(updateFooterDate, 1000);
