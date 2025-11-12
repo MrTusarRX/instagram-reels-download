@@ -21,11 +21,20 @@
             <div class="input-section">
                 <h2>Paste Instagram Video URL</h2>
                 <div class="input-group">
-                    <input type="text" id="instagramReelUrl" placeholder="https://www.instagram.com/reel/...">
+                    <div class="input-wrapper">
+                        <input type="text" id="instagramReelUrl" placeholder="Your video url...">
+                        <button id="pasteButton" class="icon-btn" title="Paste link">
+                            <i class="fas fa-paste"></i>
+                        </button>
+                        <button id="clearButton" class="icon-btn hidden" title="Clear">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                     <button id="fetchButton" class="btn">
                         <i class="fas fa-download"></i> Download
                     </button>
                 </div>
+
                 <div class="spinner" id="spinner"></div>
                 <div id="response"></div>
             </div>
@@ -66,10 +75,13 @@
     </div>
     
     <footer>
-        <p>© 2023 InstaSave Pro By MrTusarRX. All rights reserved.</p>
+        <p id="footerDate"></p>
+        <p>© InstaSave Pro. All rights reserved.</p>
         <p>This tool is not affiliated with Instagram.</p>
     </footer>
 
+
     <script src="https://mrtusarrx.github.io/instagram-reels-download/fetch.js"></script>
+    <script src="https://github.com/Techflux0/instagram-reels-download/flux.js"></script>
 </body>
 </html>

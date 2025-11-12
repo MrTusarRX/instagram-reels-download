@@ -295,3 +295,32 @@
             }
         }
    
+.input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.icon-btn {
+  position: absolute;
+  right: 45px; /* default offset for paste */
+  background: none;
+  border: none;
+  color: var(--text-light);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.icon-btn:hover {
+  color: var(--primary);
+}
+
+#clearButton {
+  right: 15px; /* appears closer to edge */
+}
+
+.hidden {
+  display: none;
+}
