@@ -561,12 +561,12 @@
           showSpinner('transcribe');
           showProgress('Fetching video metadata...', 'transcribe');
 
-          const formData = new FormData();
-          formData.append('url', url);
-
           const response = await fetch('https://api.instasave.website/media', {
             method: 'POST',
-            body: formData
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({'url': url})
           });
 
           if (!response.ok) {
