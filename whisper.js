@@ -575,11 +575,30 @@
             throw new Error('Failed to fetch video information. The Instagram URL may be invalid or the video may be private.');
           }
 
-          const data = await response.json();
-          const videoUrl = data.download_url;
+          const responseText = await response.text();
+          let data;
+          let videoUrl;
+
+          // Try parsing as JSON first
+          try {
+            data = JSON.parse(responseText);
+            videoUrl = data.download_url;
+          } catch (e) {
+            // Response is HTML, parse it
+            const cleanedHtml = responseText
+              .replace(/loader\.style\.display="none";/, '')
+              .replace(/document\.getElementById\("div_download"\)\.innerHTML ="/, '')
+              .replace(/";document\.getElementById\("downloader"\)\.remove\(\);showAd\(\);/, '')
+              .replace(/\\/g, '');
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(cleanedHtml, 'text/html');
+            const downloadLink = doc.querySelector('a.abutton.is-success');
+            videoUrl = downloadLink?.getAttribute('href');
+          }
 
           if (!videoUrl) {
-            console.error('API response:', data);
+            console.error('API response:', responseText);
             throw new Error('Could not get video download URL from API response');
           }
 
