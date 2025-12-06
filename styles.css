@@ -786,19 +786,29 @@
 
 .bulk-input-group textarea {
   width: 100%;
-  padding: 1rem;
+  padding: 1.25rem;
   border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: 0.95rem;
+  border-radius: 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
   resize: vertical;
-  min-height: 150px;
+  min-height: 180px;
   margin-bottom: 1rem;
+  background: #fafafa;
+  transition: all 0.3s ease;
+  line-height: 1.8;
 }
 
 .bulk-input-group textarea:focus {
   outline: none;
   border-color: var(--primary);
+  background: white;
+  box-shadow: 0 4px 12px rgba(64, 93, 230, 0.1);
+}
+
+.bulk-input-group textarea::placeholder {
+  color: #aaa;
+  font-style: italic;
 }
 
 .bulk-actions {
@@ -821,21 +831,48 @@
 
 .queue-item {
   display: grid;
-  grid-template-columns: 40px 1fr 200px;
-  gap: 15px;
-  padding: 1rem;
-  margin-bottom: 10px;
-  background: var(--bg-light);
-  border-radius: 8px;
+  grid-template-columns: 50px 1fr 220px;
+  gap: 20px;
+  padding: 1.25rem;
+  margin-bottom: 12px;
+  background: white;
+  border-radius: 12px;
   align-items: center;
-  border-left: 4px solid #ccc;
+  border-left: 5px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.queue-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateX(4px);
 }
 
 .queue-item-number {
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: var(--primary);
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: white;
   text-align: center;
+  background: var(--gradient);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(64, 93, 230, 0.3);
 }
 
 .queue-item-url {
@@ -844,12 +881,20 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: 'Courier New', monospace;
+  background: #f8f9fa;
+  padding: 8px 12px;
+  border-radius: 6px;
 }
 
 .queue-item-status {
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.95rem;
+  font-weight: 700;
   text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
 .status-pending {
@@ -862,7 +907,13 @@
 
 .status-processing {
   border-left-color: var(--primary);
-  background: #e6f0ff;
+  background: linear-gradient(to right, #e6f0ff, white);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
 }
 
 .status-processing .queue-item-status {
@@ -871,7 +922,7 @@
 
 .status-completed {
   border-left-color: #52c41a;
-  background: #f0fff4;
+  background: linear-gradient(to right, #f0fff4, white);
 }
 
 .status-completed .queue-item-status {
@@ -880,12 +931,15 @@
 
 .status-failed {
   border-left-color: #ff4d4f;
-  background: #fff1f0;
+  background: linear-gradient(to right, #fff1f0, white);
 }
 
 .status-failed .queue-item-status {
   color: #ff4d4f;
   font-size: 0.85rem;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #bulkDownloadSection {
