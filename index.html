@@ -36,7 +36,7 @@
                 <button id="transcribeTab" class="tab">
                     <i class="fas fa-closed-captioning"></i> Transcribe
                 </button>
-                <button id="bulkTab" class="tab" disabled title="Coming in Phase 2">
+                <button id="bulkTab" class="tab">
                     <i class="fas fa-list"></i> Bulk
                 </button>
             </div>
@@ -119,15 +119,42 @@
             </div>
         </div>
 
-        <!-- Bulk Mode Section (Phase 2) -->
+        <!-- Bulk Mode Section -->
         <div id="bulkSection" class="mode-section" style="display: none;">
             <div class="container">
                 <div class="input-section">
                     <h2>Bulk Transcription</h2>
                     <p class="info-text">
                         <i class="fas fa-info-circle"></i>
-                        Coming in Phase 2: Process multiple Instagram videos at once
+                        Paste multiple Instagram video URLs (one per line) to transcribe them all at once
                     </p>
+
+                    <div class="bulk-input-group">
+                        <textarea id="bulkUrlsInput" placeholder="https://www.instagram.com/reel/...&#10;https://www.instagram.com/reel/...&#10;https://www.instagram.com/reel/..." rows="8"></textarea>
+                        <div class="bulk-actions">
+                            <button id="processBulkButton" class="btn">
+                                <i class="fas fa-play"></i> Process All
+                            </button>
+                            <button id="clearBulkButton" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="spinner" id="bulkSpinner" style="display: none;"></div>
+                    <div id="bulkResponse"></div>
+                </div>
+
+                <!-- Bulk Queue Display -->
+                <div id="bulkQueueSection" style="display: none;">
+                    <h3>Processing Queue</h3>
+                    <div id="bulkQueue"></div>
+
+                    <div id="bulkDownloadSection" style="display: none;">
+                        <button id="downloadAllButton" class="btn">
+                            <i class="fas fa-download"></i> Download All Transcripts (ZIP)
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -169,11 +196,13 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://mrtusarrx.github.io/instagram-reels-download/fetch.js"></script>
     <script src="flux.js"></script>
     <script src="settings.js"></script>
     <script src="tabs.js"></script>
     <script src="whisper.js"></script>
     <script src="download-enhance.js"></script>
+    <script src="bulk.js"></script>
 </body>
 </html>
