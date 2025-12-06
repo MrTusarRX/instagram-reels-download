@@ -119,13 +119,30 @@
     return currentMode;
   }
 
+  // Switch to transcribe tab and start transcription with video URL
+  function switchToTranscribe(videoUrl) {
+    switchToMode(MODES.TRANSCRIBE);
+
+    // Trigger transcription in transcribe tab
+    if (window.WhisperAPI && window.WhisperAPI.transcribeFromVideoUrl) {
+      // Small delay to ensure tab is visible
+      setTimeout(() => {
+        window.WhisperAPI.transcribeFromVideoUrl(videoUrl);
+      }, 100);
+    }
+  }
+
   // Public API
-  window.TabManager = {
+  window.Tabs = {
     init: initTabs,
     switchTo: switchToMode,
+    switchToTranscribe: switchToTranscribe,
     getCurrentMode: getCurrentMode,
     MODES: MODES
   };
+
+  // Also expose as TabManager for backward compatibility
+  window.TabManager = window.Tabs;
 
   // Initialize when DOM is ready
   if (document.readyState === 'loading') {

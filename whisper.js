@@ -9,6 +9,9 @@
   // Store video blob for transcription
   let currentVideoBlob = null;
 
+  // Video cache to avoid re-fetching
+  const videoCache = new Map(); // URL -> {blob, timestamp}
+
   // Initialize Whisper module
   function initWhisper() {
     // Public API will be initialized at the end
@@ -307,10 +310,17 @@
     }
   }
 
-  // Fetch video as blob
+  // Fetch video as blob with caching
   async function fetchVideoAsBlob(url) {
     try {
-      // This assumes the video URL is from the api.instasave.website response
+      // Check cache first (cache for 5 minutes)
+      const cached = videoCache.get(url);
+      if (cached && (Date.now() - cached.timestamp < 5 * 60 * 1000)) {
+        console.log('Using cached video for:', url);
+        return cached.blob;
+      }
+
+      // Fetch video
       const response = await fetch(url, {
         mode: 'cors',
         credentials: 'omit'
@@ -318,7 +328,15 @@
       if (!response.ok) {
         throw new Error('Failed to fetch video');
       }
-      return await response.blob();
+      const blob = await response.blob();
+
+      // Cache the blob
+      videoCache.set(url, {
+        blob: blob,
+        timestamp: Date.now()
+      });
+
+      return blob;
     } catch (error) {
       // CORS error - need alternative method
       if (error.message.includes('CORS') || error.message.includes('cors') ||
@@ -588,10 +606,60 @@
     }
   }
 
+  // ==================== TRANSCRIBE FROM VIDEO URL (FOR TAB SWITCHING) ====================
+
+  // Transcribe from a video URL (called when switching from download tab)
+  async function transcribeFromVideoUrl(videoUrl) {
+    try {
+      // Check if API key is configured
+      if (!Settings || !Settings.hasApiKey()) {
+        showMessage('error', 'Please configure your OpenAI API key in Settings', 'transcribe');
+        if (Settings && Settings.openSettings) {
+          Settings.openSettings();
+        }
+        return;
+      }
+
+      const apiKey = Settings.getApiKey();
+
+      // Show loading state
+      showSpinner('transcribe');
+      clearMessage('transcribe');
+
+      // Fetch video (will use cache if available)
+      showProgress('Fetching video...', 'transcribe');
+      const videoBlob = await fetchVideoAsBlob(videoUrl);
+      currentVideoBlob = videoBlob;
+
+      // Transcribe video directly
+      showProgress('Transcribing video...', 'transcribe');
+      const result = await transcribeAudio(videoBlob, apiKey);
+
+      // Display results
+      displayTranscriptionResults(result, videoBlob, 'transcribe');
+
+      hideSpinner('transcribe');
+      showMessage('success', 'Transcription complete!', 'transcribe');
+
+    } catch (error) {
+      console.error('Transcription error:', error);
+      hideSpinner('transcribe');
+
+      // If CORS error, show file upload option with download link
+      if (error.message === 'Failed to download video: CORS_ERROR') {
+        showMessage('error', 'Cannot fetch video due to CORS restrictions.', 'transcribe');
+        showFileUploadOption(videoUrl);
+      } else {
+        showMessage('error', error.message || 'Transcription failed', 'transcribe');
+      }
+    }
+  }
+
   // ==================== PUBLIC API ====================
 
   window.WhisperAPI = {
     transcribeVideo: transcribeVideo,
+    transcribeFromVideoUrl: transcribeFromVideoUrl,
     copyTranscript: copyTranscript,
     downloadTranscript: downloadTranscript,
     downloadVideo: downloadVideo,
