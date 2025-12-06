@@ -38,7 +38,7 @@
       const source = audioContext.createMediaElementSource(video);
       const dest = audioContext.createMediaStreamDestination();
       source.connect(dest);
-      source.connect(audioContext.destination);
+      // Don't connect to destination to keep extraction silent
 
       // Create MediaRecorder to capture audio
       const mediaRecorder = new MediaRecorder(dest.stream, {
@@ -54,7 +54,11 @@
 
       // Start recording and play video
       mediaRecorder.start();
-      video.play();
+      try {
+        await video.play();
+      } catch (error) {
+        throw new Error('Failed to play video for audio extraction. Please try again.');
+      }
 
       // Wait for video to finish
       await new Promise((resolve) => {
