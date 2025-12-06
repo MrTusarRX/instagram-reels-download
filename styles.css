@@ -170,14 +170,13 @@
         /* Mode Sections */
         .mode-section {
             width: 100%;
-            display: flex;
-            justify-content: center;
             padding-bottom: 2rem;
         }
-        
+
         .container {
             width: 100%;
             max-width: 700px;
+            margin: 0 auto;
             background: white;
             border-radius: 0 0 16px 16px;
             box-shadow: var(--card-shadow);
