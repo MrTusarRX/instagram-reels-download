@@ -97,6 +97,7 @@
   // Check URL hash and switch mode accordingly
   function checkUrlHash() {
     const hash = window.location.hash.replace('#', '');
+    console.log('Checking URL hash:', hash || '(none)');
 
     switch (hash) {
       case 'transcribe':
@@ -111,6 +112,7 @@
         break;
     }
 
+    console.log('Switching to mode:', currentMode);
     switchToMode(currentMode);
   }
 
@@ -127,8 +129,20 @@
     if (window.WhisperAPI && window.WhisperAPI.transcribeFromVideoUrl) {
       // Small delay to ensure tab is visible
       setTimeout(() => {
+        console.log('Auto-triggering transcription for:', videoUrl);
         window.WhisperAPI.transcribeFromVideoUrl(videoUrl);
       }, 100);
+    } else {
+      console.error('WhisperAPI.transcribeFromVideoUrl not available');
+      // Retry after a longer delay in case scripts are still loading
+      setTimeout(() => {
+        if (window.WhisperAPI && window.WhisperAPI.transcribeFromVideoUrl) {
+          console.log('Retrying transcription trigger for:', videoUrl);
+          window.WhisperAPI.transcribeFromVideoUrl(videoUrl);
+        } else {
+          console.error('WhisperAPI still not available after retry');
+        }
+      }, 500);
     }
   }
 
