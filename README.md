@@ -5,6 +5,7 @@ Download and transcribe Instagram Reels directly in your browser. No backend, no
 ## What it can do
 - Download Instagram Reels in high quality (single URLs)
 - Transcribe Reels with OpenAI Whisper (shows language, duration, word count)
+- Upload your own video/audio to transcribe (no Instagram required)
 - Copy transcripts or download as TXT/SRT
 - Bulk mode: paste many URLs, see progress, and download transcripts as a ZIP
 - URL cleaning removes tracking params automatically
@@ -24,7 +25,7 @@ You need your own OpenAI API key for transcription.
 ## Usage
 1) Open the site.
 2) Click the gear icon, add your OpenAI API key, and save.
-3) Paste an Instagram Reel URL.
+3) Paste an Instagram Reel URL or upload your own media file.
 4) Choose Download or Transcribe.
 5) For bulk, paste multiple URLs (one per line) and start the queue; download transcripts as a ZIP when done.
 

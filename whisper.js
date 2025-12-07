@@ -577,11 +577,7 @@
         try {
           const apiKey = Settings.getApiKey();
 
-          // Hide file upload section
-          const fileUploadSection = document.getElementById('fileUploadSection');
-          if (fileUploadSection) {
-            fileUploadSection.style.display = 'none';
-          }
+          transcribeFileBtn.disabled = true;
 
           // Show loading state
           showSpinner('transcribe');
@@ -596,17 +592,13 @@
 
           hideSpinner('transcribe');
           showMessage('success', 'Transcription complete!', 'transcribe');
+          transcribeFileBtn.disabled = false;
 
         } catch (error) {
           console.error('Transcription error:', error);
           hideSpinner('transcribe');
           showMessage('error', error.message || 'Transcription failed', 'transcribe');
-
-          // Show file upload section again
-          const fileUploadSection = document.getElementById('fileUploadSection');
-          if (fileUploadSection) {
-            fileUploadSection.style.display = 'block';
-          }
+          transcribeFileBtn.disabled = false;
         }
       });
     }
