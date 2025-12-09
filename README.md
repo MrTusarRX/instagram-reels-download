@@ -31,7 +31,7 @@ You need your own OpenAI API key for transcription.
 
 ## Links
 - Live site: https://instascribe.siteview.uk/
-- Source code: https://github.com/MrTusarRX/instagram-reels-download
+- Source code: https://github.com/MrTusarRX/instagram-reels-download.git
 
 ## Screenshot
 ![Image](https://raw.githubusercontent.com/MrTusarRX/instagram-reels-download/refs/heads/main/Proof.png)
